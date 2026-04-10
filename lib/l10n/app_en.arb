@@ -1,4 +1,5 @@
 {
     "hello": "Hello",
-    "changeYourLanguage": "Change your language"
+    "changeYourLanguage": "Change your language",
+    "changeTheme": "Change theme"
 }
