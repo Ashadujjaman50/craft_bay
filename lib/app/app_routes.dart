@@ -4,6 +4,7 @@ import '../features/auth/presentation/screen/sign_in_screen.dart';
 import '../features/auth/presentation/screen/sign_up_screen.dart';
 import '../features/auth/presentation/screen/splash_screen.dart';
 import '../features/auth/presentation/screen/verify_otp_screen.dart';
+import '../features/shared/presentation/screens/main_nav_holder_screen.dart';
 
 class AppRoutes{
 
@@ -21,6 +22,9 @@ class AppRoutes{
         break;
       case VerifyOtpScreen.name:
         widget = const VerifyOtpScreen();
+        break;
+      case MainNavHolderScreen.name:
+        widget = const MainNavHolderScreen();
         break;
 
 

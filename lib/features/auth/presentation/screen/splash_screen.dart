@@ -1,6 +1,6 @@
-import 'package:craft_bay/features/auth/presentation/screen/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../../shared/presentation/screens/main_nav_holder_screen.dart';
 import '../widgets/app_logo.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _navigateToNextScreen() async {
     await Future.delayed(const Duration(seconds: 2));
-    Navigator.pushReplacementNamed(context, SignUpScreen.name);
+    Navigator.pushReplacementNamed(context, MainNavHolderScreen.name);
   }
 
   @override
