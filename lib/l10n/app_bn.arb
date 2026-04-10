@@ -1,5 +1,27 @@
 {
     "hello": "হ্যালো",
     "changeYourLanguage": "আপনার ভাষা পরিবর্তন করুন",
-    "changeTheme": "থিম পরিবরতন করুন"
+    "changeTheme": "থিম পরিবরতন করুন",
+
+    "signUpWithEmail": "ইমেইল দিয়ে সাইন আপ করুন",
+    "getStartedWithYourDetails": "আপনার বিস্তারিত তথ্য দিয়ে শুরু করুন",
+
+    "welcomeBack": "আবার স্বাগতম",
+    "pleaseEnterYourEmailAddress": "আপনার ইমেল এবং পাসওয়ার্ড দিয়ে সাইনইন করুন",
+    "emailRequired": "ইমেইল দেওয়া আবশ্যক",
+    "invalidEmail": "সঠিক ইমেইল লিখুন",
+    "firstNameRequired": "নামের প্রথম অংশ দেওয়া আবশ্যক",
+    "lastNameRequired": "নামের শেষ অংশ দেওয়া আবশ্যক",
+    "phoneRequired": "ফোন নম্বর দেওয়া আবশ্যক",
+    "cityRequired": "শহরের নাম দেওয়া আবশ্যক",
+    "passwordRequired": "পাসওয়ার্ড দেওয়া আবশ্যক",
+
+    "email": "ইমেইল",
+    "firstName": "নামের প্রথম অংশ",
+    "lastName": "নামের শেষ অংশ",
+    "phone": "ফোন",
+    "city": "সিটি",
+    "password": "পাসওয়ার্ড",
+    "signUp": "সাইন আপ",
+    "signIn": "সাইন ইন"
 }

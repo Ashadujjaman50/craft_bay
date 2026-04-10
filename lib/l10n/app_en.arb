@@ -1,5 +1,29 @@
 {
     "hello": "Hello",
     "changeYourLanguage": "Change your language",
-    "changeTheme": "Change theme"
+    "changeTheme": "Change theme",
+
+    "signUpWithEmail": "Sign Up With Email",
+    "getStartedWithYourDetails": "Get started with your Details",
+
+    "welcomeBack": "Welcome Back",
+    "pleaseEnterYourEmailAddress": "Sign in with your email and password",
+    "emailRequired": "Email is required",
+    "invalidEmail": "Please enter a valid email",
+    "firstNameRequired": "First name is required",
+    "lastNameRequired": "Last name is required",
+    "phoneRequired": "Phone is required",
+    "cityRequired": "City name is required",
+    "passwordRequired": "Password is required",
+
+    "email": "Email",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "phone": "Phone",
+    "city": "City",
+    "password": "Password",
+
+    "signUp": "Sign Up",
+    "signIn": "Sign In"
+
 }
