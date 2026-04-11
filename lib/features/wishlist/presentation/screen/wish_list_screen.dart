@@ -1,8 +1,8 @@
-import 'package:craft_bay/features/shared/presentation/widgets/product_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../shared/presentation/providers/main_nav_provider.dart';
+import '../../../shared/presentation/widgets/product_card.dart';
 
 class WishListScreen extends StatefulWidget {
   const WishListScreen({super.key});
@@ -32,10 +32,12 @@ class _WishListScreenState extends State<WishListScreen> {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GridView.builder(
-            itemCount: 12,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            itemCount: 14,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               mainAxisSpacing: 4,
+              crossAxisSpacing: 8,
+              childAspectRatio: 0.75,
             ),
             itemBuilder: (context, index) {
               return FittedBox(child: ProductCard());

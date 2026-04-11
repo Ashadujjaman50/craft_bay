@@ -22,10 +22,12 @@ class _ProductListScreenState extends State<ProductListScreen> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
-          itemCount: 13,
+          itemCount: 19,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3,
             mainAxisSpacing: 4,
+            crossAxisSpacing: 8,
+            childAspectRatio: 0.75,
           ),
           itemBuilder: (context, index) {
             return FittedBox(child: ProductCard());
