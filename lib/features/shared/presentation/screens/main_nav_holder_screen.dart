@@ -2,6 +2,7 @@ import 'package:craft_bay/app/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../category/presentation/screens/category_list_screen.dart';
 import '../../../home/presentation/screen/home_screen.dart';
 import '../providers/main_nav_provider.dart';
 
@@ -18,7 +19,7 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    SizedBox(),
+    CategoryListScreen(),
     SizedBox(),
     SizedBox(),
   ];
