@@ -1,15 +1,16 @@
-import 'package:craft_bay/features/auth/data/models/sign_up_params.dart';
-import 'package:craft_bay/features/auth/presentation/screen/sign_in_screen.dart';
-import 'package:craft_bay/features/auth/presentation/screen/verify_otp_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app/extensions/localization_extension.dart';
 import '../../../../app/extensions/utils_extension.dart';
 import '../../../shared/presentation/utils/validators.dart';
+import '../../../shared/presentation/widgets/center_circular_progress.dart';
 import '../../../shared/presentation/widgets/snack_bar_message.dart';
+import '../../data/models/sign_up_params.dart';
 import '../providers/sign_up_provider.dart';
 import '../widgets/app_logo.dart';
+import 'sign_in_screen.dart';
+import 'verify_otp_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -118,7 +119,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Consumer<SignUpProvider>(
                       builder: (context, signUpProvider, _) {
                         if (signUpProvider.signUpInProgress) {
-                          return CircularProgressIndicator();
+                          return CenterCircularProgress();
                         }
 
                         return FilledButton(
@@ -160,7 +161,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final bool isSuccess = await _signUpProvider.signUp(signUpParams);
 
     if (isSuccess) {
-      Navigator.pushNamed(context, VerifyOtpScreen.name);
+      Navigator.pushNamed(context, VerifyOtpScreen.name, arguments: _emailTEController.text.trim());
     } else {
       showSnackBarMessage(context, _signUpProvider.errorMessage!);
     }

@@ -42,7 +42,7 @@ class NetworkCaller {
           isSuccess: false,
           responseCode: response.statusCode,
           errorMessage:
-          decodedData['data'], // TODO: Decouple this data variable
+          decodedData['msg'], // TODO: Decouple this data variable
         );
       }
     } catch (e) {
@@ -77,7 +77,8 @@ class NetworkCaller {
           responseCode: response.statusCode,
           body: decodedData,
         );
-      } else if (response.statusCode == 401) {
+      }
+      else if (response.statusCode == 401) {
         onUnauthorize();
         return NetworkResponse(
           isSuccess: false,
@@ -88,7 +89,7 @@ class NetworkCaller {
         return NetworkResponse(
           isSuccess: false,
           responseCode: response.statusCode,
-          errorMessage: decodedData['data'],
+          errorMessage: decodedData['msg'],
         );
       }
     } catch (e) {
