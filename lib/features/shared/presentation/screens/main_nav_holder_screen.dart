@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../app/app_colors.dart';
 import '../../../cart/presentation/screens/cart_screen.dart';
+import '../../../category/presentation/providers/category_list_provider.dart';
 import '../../../category/presentation/screens/category_list_screen.dart';
 import '../../../home/presentation/screen/home_screen.dart';
 import '../../../wishlist/presentation/screen/wish_list_screen.dart';
@@ -32,6 +33,7 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<HomeSliderProvider>().getHomeSliders();
+      context.read<CategoryListProvider>().getCategories();
     });
   }
 
