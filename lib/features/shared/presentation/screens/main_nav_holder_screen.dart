@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../category/presentation/screens/category_list_screen.dart';
 import '../../../home/presentation/screen/home_screen.dart';
+import '../../../wishlist/presentation/screen/wish_list_screen.dart';
 import '../providers/main_nav_provider.dart';
 
 class MainNavHolderScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
     HomeScreen(),
     CategoryListScreen(),
     SizedBox(),
-    SizedBox(),
+    WishListScreen(),
   ];
 
 
