@@ -1,12 +1,14 @@
-import 'package:craft_bay/app/app_theme.dart';
-import 'package:craft_bay/app/providers/language_provider.dart';
-import 'package:craft_bay/app/providers/theme_provider.dart';
-import 'package:craft_bay/features/shared/presentation/providers/main_nav_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+
+import '../features/home/presentation/providers/home_slider_provider.dart';
+import '../features/shared/presentation/providers/main_nav_provider.dart';
 import '../l10n/app_localizations.dart';
 import 'app_routes.dart';
+import 'app_theme.dart';
+import 'providers/language_provider.dart';
+import 'providers/theme_provider.dart';
 
 class CraftyBayApp extends StatelessWidget {
   const CraftyBayApp({super.key});
@@ -20,6 +22,7 @@ class CraftyBayApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => LanguageProvider()),
         ChangeNotifierProvider(create: (context) => ThemeProvider()),
         ChangeNotifierProvider(create: (context) => MainNavProvider()),
+        ChangeNotifierProvider(create: (context) => HomeSliderProvider()),
       ],
       child: Consumer2<LanguageProvider, ThemeProvider>(
         builder: (context, languageProvider, themeProvider, child) {

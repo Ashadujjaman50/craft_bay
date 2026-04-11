@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../app/extensions/localization_extension.dart';
 import '../../../../app/extensions/utils_extension.dart';
+import '../../../shared/presentation/screens/main_nav_holder_screen.dart';
 import '../../../shared/presentation/utils/validators.dart';
+import '../../../shared/presentation/widgets/center_circular_progress.dart';
+import '../../../shared/presentation/widgets/snack_bar_message.dart';
+import '../providers/sign_in_provider.dart';
 import '../widgets/app_logo.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -15,68 +20,108 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  final SignInProvider _signInProvider = SignInProvider();
+
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+      value: _signInProvider,
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 48),
+                    AppLogo(),
+                    const SizedBox(height: 24),
+                    Text(
+                      context.l10n.welcomeBack,
+                      style: context.textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      context.l10n.pleaseEnterYourEmailAddress,
+                      style: context.textTheme.bodyLarge?.copyWith(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    TextFormField(
+                      controller: _emailTEController,
+                      decoration: InputDecoration(hintText: context.l10n.email),
+                      validator: (String? value) => Validators.validateEmail(
+                        value,
+                        context.l10n.emailRequired,
+                        context.l10n.invalidEmail,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    TextFormField(
+                      controller: _passwordTEController,
+                      obscureText: true,
+                      obscuringCharacter: '*',
+                      decoration: InputDecoration(
+                        hintText: context.l10n.password,
+                      ),
+                      validator: (String? value) =>
+                          Validators.validatePassword(value),
+                    ),
+                    const SizedBox(height: 16),
 
-    return Scaffold(
-      body: SafeArea(child: Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              children: [
-                const SizedBox(height: 48),
-                AppLogo(),
-                const SizedBox(height: 24),
-                Text(context.l10n.welcomeBack,
-                    style: context.textTheme.titleLarge
+                    Consumer<SignInProvider>(
+                      builder: (context, _, _) {
+                        if (_signInProvider.signInProgress) {
+                          return CenterCircularProgress();
+                        }
+                        return FilledButton(
+                          onPressed: _onTapSignInButton,
+                          child: Text(context.l10n.signIn),
+                        );
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: _onTapSignUpButton,
+                      child: Text('Need an account? Sign up'),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                    context.l10n.pleaseEnterYourEmailAddress,
-                    style: context.textTheme.bodyLarge?.copyWith(color: Colors.grey)
-                ),
-                const SizedBox(height: 24),
-                TextFormField(
-                  decoration: InputDecoration(hintText: context.l10n.email),
-                  validator: (String? value) =>
-                      Validators.validateEmail(value, context.l10n.emailRequired,context.l10n.invalidEmail),
-                ),
-                const SizedBox(height: 8),
-                TextFormField(
-                  decoration: InputDecoration(hintText: context.l10n.password),
-                  validator: (String? value) =>
-                      Validators.validatePassword(value),
-                ),
-                const SizedBox(height: 16),
-                
-                FilledButton(
-                    onPressed: _onTapSignInButton, child: Text(context.l10n.signIn)
-                ),
-                const SizedBox(height: 16),
-                TextButton(
-                    onPressed: _onTapSignUpButton,
-                    child: Text('Need an account? Sign up')
-                ),
-              ],
+              ),
             ),
           ),
         ),
-      )),
+      ),
     );
   }
 
-  void _onTapSignInButton() {
-
+  Future<void> _onTapSignInButton() async {
+    if (_formKey.currentState!.validate()) {
+      final bool isSuccess = await _signInProvider.signIn(
+        email: _emailTEController.text.trim(),
+        password: _passwordTEController.text,
+      );
+      if (isSuccess) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          MainNavHolderScreen.name,
+          (_) => false,
+        );
+      } else {
+        showSnackBarMessage(context, _signInProvider.errorMessage!);
+      }
+    }
   }
+
   void _onTapSignUpButton() {
     Navigator.pop(context);
   }
@@ -88,5 +133,4 @@ class _SignInScreenState extends State<SignInScreen> {
 
     super.dispose();
   }
-
 }

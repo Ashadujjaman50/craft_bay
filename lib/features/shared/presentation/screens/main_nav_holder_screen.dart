@@ -1,3 +1,4 @@
+import 'package:craft_bay/features/home/presentation/providers/home_slider_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +27,13 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
     WishListScreen(),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      context.read<HomeSliderProvider>().getHomeSliders();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
