@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 class IncDecButton extends StatefulWidget {
   const IncDecButton({
     super.key,
-    this.width = 100,
     required this.onChange,
-    this.maxCount = 20});
+    this.width = 100,
+    this.maxCount = 20,
+    this.initialValue = 1,
+  });
 
+  final int initialValue;
   final double width;
   final Function(int) onChange;
   final int maxCount;
@@ -18,8 +21,13 @@ class IncDecButton extends StatefulWidget {
 }
 
 class _IncDecButtonState extends State<IncDecButton> {
-
   int _count = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _count = widget.initialValue;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,15 +36,15 @@ class _IncDecButtonState extends State<IncDecButton> {
       child: Row(
         mainAxisAlignment: .spaceBetween,
         children: [
-          _buildButton(Icons.remove, (){
-            if(_count > 1){
+          _buildButton(Icons.remove, () {
+            if (_count > 1) {
               _count--;
               setState(() {});
               widget.onChange(_count);
             }
           }),
-          Text('$_count', style: context.textTheme.titleLarge,),
-          _buildButton(Icons.add,(){
+          Text('$_count', style: context.textTheme.titleLarge),
+          _buildButton(Icons.add, () {
             if (_count < widget.maxCount) {
               _count++;
               widget.onChange(_count);
@@ -48,18 +56,17 @@ class _IncDecButtonState extends State<IncDecButton> {
     );
   }
 
-  Widget _buildButton(IconData icon, VoidCallback onTap){
+  Widget _buildButton(IconData icon, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: .all(8),
+        padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: AppColors.themeColor,
           borderRadius: BorderRadius.circular(8),
         ),
-        child: Icon(icon, size:  18, color: Colors.white,),
+        child: Icon(icon, size: 18, color: Colors.white),
       ),
     );
   }
-
 }

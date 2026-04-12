@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../shared/presentation/providers/main_nav_provider.dart';
+import '../../../shared/presentation/widgets/center_circular_progress.dart';
+import '../providers/cart_list_provider.dart';
 import '../widgets/cart_item.dart';
 import '../widgets/total_price_and_checkout_section.dart';
 
@@ -13,6 +15,16 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
+  final CartListProvider _cartListProvider = CartListProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _cartListProvider.getCartList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -28,18 +40,34 @@ class _CartScreenState extends State<CartScreen> {
           ),
           title: Text('Carts'),
         ),
-        body: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: 6,
-                itemBuilder: (context, index) {
-                  return CartItem();
-                },
-              ),
-            ),
-            TotalPriceAndCheckoutSection(totalPrice: 120, onTapCheckout: () {}),
-          ],
+        body: ChangeNotifierProvider.value(
+          value: _cartListProvider,
+          child: Consumer<CartListProvider>(
+            builder: (context, _, _) {
+              if (_cartListProvider.getCartListInProgress) {
+                return CenterCircularProgress();
+              }
+
+              return Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _cartListProvider.cartItems.length,
+                      itemBuilder: (context, index) {
+                        return CartItem(
+                          cartItemModel: _cartListProvider.cartItems[index],
+                        );
+                      },
+                    ),
+                  ),
+                  TotalPriceAndCheckoutSection(
+                    totalPrice: _cartListProvider.totalPrice,
+                    onTapCheckout: () {},
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
