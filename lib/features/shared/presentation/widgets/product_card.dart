@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
 
 import '../../../../app/app_colors.dart';
-import '../../../../app/assets_paths.dart';
 import '../../../../app/constants.dart';
 import '../../../../app/extensions/utils_extension.dart';
+import '../../../products/data/models/product_model.dart';
 import '../../../products/presentation/screen/product_details_screen.dart';
+import 'network_image_widget.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key,});
+  const ProductCard({super.key, required this.productModel});
+
+  final ProductModel productModel;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        Navigator.pushNamed(context, ProductDetailsScreen.name);
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          ProductDetailsScreen.name,
+          arguments: productModel.id,
+        );
       },
       child: Card(
         color: Colors.white,
@@ -31,14 +38,11 @@ class ProductCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.themeColor.withAlpha(30),
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
+                    topLeft: .circular(8),
+                    topRight: .circular(8),
                   ),
                 ),
-                child: Image.asset(
-                  AssetsPaths.dummyImagePng,
-                  fit: BoxFit.scaleDown,
-                ),
+                child: AppNetworkImage(urls: productModel.photos),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -46,24 +50,29 @@ class ProductCard extends StatelessWidget {
                   spacing: 2,
                   children: [
                     Text(
-                      'Nike Shoe- New Edition 2025',
+                      productModel.title,
+                      overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: TextStyle(overflow: .ellipsis),
                     ),
                     Row(
                       mainAxisAlignment: .spaceBetween,
                       children: [
-                        Text('${Constants.takaSign}120',
+                        Text(
+                          '${Constants.takaSign}${productModel.currentPrice}',
                           style: context.textTheme.titleSmall?.copyWith(
-                            color: AppColors.themeColor,),
+                            color: AppColors.themeColor,
+                          ),
                         ),
                         Wrap(
                           crossAxisAlignment: .center,
                           children: [
                             Icon(Icons.star, size: 18, color: Colors.amber),
-                            Text('4.6',
+                            Text(
+                              '4.6',
                               style: context.textTheme.titleSmall?.copyWith(
-                                  color: Colors.grey),
+                                color: Colors.grey,
+                              ),
                             ),
                           ],
                         ),
@@ -71,16 +80,20 @@ class ProductCard extends StatelessWidget {
                           padding: .all(2),
                           decoration: BoxDecoration(
                             color: AppColors.themeColor,
-                            borderRadius: BorderRadius.circular(4),
+                            borderRadius: .circular(4),
                           ),
-                          child: Icon(Icons.favorite_outline, color: Colors.white, size: 16,),
+                          child: Icon(
+                            Icons.favorite_outline,
+                            color: Colors.white,
+                            size: 16,
+                          ),
                         ),
                       ],
                     ),
                   ],
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
             ],
           ),
         ),

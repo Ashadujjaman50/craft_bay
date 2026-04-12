@@ -16,7 +16,7 @@ class CategoryListProvider extends ChangeNotifier {
 
   bool _getInitialCategoryListInProgress = true;
 
-  bool _loadMoreCategoryListInProgress = true;
+  bool _loadMoreCategoryListInProgress = false;
 
   bool get getInitialCategoryListInProgress =>
       _getInitialCategoryListInProgress;
@@ -73,4 +73,7 @@ class CategoryListProvider extends ChangeNotifier {
   bool get _isInitialLoading {
     return _currentPageNo == 1;
   }
+
+  bool get isLoading =>
+      _getInitialCategoryListInProgress || _loadMoreCategoryListInProgress;
 }

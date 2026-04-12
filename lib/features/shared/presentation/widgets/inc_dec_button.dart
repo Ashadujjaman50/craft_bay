@@ -3,10 +3,15 @@ import 'package:craft_bay/app/extensions/utils_extension.dart';
 import 'package:flutter/material.dart';
 
 class IncDecButton extends StatefulWidget {
-  const IncDecButton({super.key, this.width = 100, required this.onChange});
+  const IncDecButton({
+    super.key,
+    this.width = 100,
+    required this.onChange,
+    this.maxCount = 20});
 
   final double width;
   final Function(int) onChange;
+  final int maxCount;
 
   @override
   State<IncDecButton> createState() => _IncDecButtonState();
@@ -32,9 +37,11 @@ class _IncDecButtonState extends State<IncDecButton> {
           }),
           Text('$_count', style: context.textTheme.titleLarge,),
           _buildButton(Icons.add,(){
-            _count++;
-            setState(() {});
-            widget.onChange(_count);
+            if (_count < widget.maxCount) {
+              _count++;
+              widget.onChange(_count);
+              setState(() {});
+            }
           }),
         ],
       ),

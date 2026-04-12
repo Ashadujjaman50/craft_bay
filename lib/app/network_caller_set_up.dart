@@ -1,3 +1,4 @@
+import 'package:craft_bay/app/controllers/auth_controller.dart';
 import 'package:flutter/material.dart';
 
 import '../core/services/network_caller.dart';
@@ -6,9 +7,17 @@ import 'crafty_bay_app.dart';
 
 NetworkCaller getNetworkCaller() {
   return NetworkCaller(
-    headers: {'token': 'token', 'content-type': 'application/json'},
-    onUnauthorize: () {
-      // TODO: Clear user data
+    headers: () {
+      Map<String, String> headers = {
+        'content-type': 'application/json',
+      };
+      if (AuthController.token != null) {
+        headers['token'] = '${AuthController.token}';
+      }
+      return headers;
+    },
+    onUnauthorize: () async {
+      await AuthController.clearUserData();
       _moveToSignInScreen();
     },
   );
