@@ -1,20 +1,34 @@
-import 'package:craft_bay/features/products/presentation/screen/create_review_screen.dart';
+import 'package:craft_bay/features/products_review/presentation/screen/create_review_screen.dart';
+import 'package:craft_bay/features/shared/presentation/widgets/center_circular_progress.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../app/app_colors.dart';
+import '../providers/product_review_provider.dart';
 import '../widgets/review_card.dart';
 
 class ProductReviewScreen extends StatefulWidget {
-  const ProductReviewScreen({super.key});
+  const ProductReviewScreen({super.key, required this.productId});
 
   static const String name = '/product-review';
-
+  final String productId;
 
   @override
   State<ProductReviewScreen> createState() => _ProductReviewScreenState();
 }
 
 class _ProductReviewScreenState extends State<ProductReviewScreen> {
+
+  final ProductReviewProvider _productReviewProvider = ProductReviewProvider();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      _productReviewProvider.getProductReview(widget.productId);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,26 +43,36 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
         elevation: 0.5,
         foregroundColor: Colors.black,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: 4, 
-              padding: const EdgeInsets.only(top: 8),
-              itemBuilder: (context, index) {
-                return const ReviewCard(
-                  userName: 'Rabbil Hasan',
-                  reviewText:
-                  'Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator Reference site about Lorem Ipsum, giving information on its origins, as well as a random Lipsum generator',
-                );
-              },
-            ),
-          ),
-         
-          _buildReviewCountAndCreate('153', () {
-            Navigator.pushNamed(context, CreateReviewScreen.name);
-          }),
-        ],
+      body: ChangeNotifierProvider.value(
+        value: _productReviewProvider,
+        child: Consumer<ProductReviewProvider>(
+          builder: (context,_,_) {
+
+            if (_productReviewProvider.getProductReviewInProgress) {
+              return CenterCircularProgress();
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _productReviewProvider.reviewLists.length,
+                    padding: const EdgeInsets.only(top: 8),
+                    itemBuilder: (context, index) {
+                      return ReviewCard(
+                        reviewModel: _productReviewProvider.reviewLists[index],
+                      );
+                    },
+                  ),
+                ),
+
+                _buildReviewCountAndCreate('153', () {
+                  Navigator.pushNamed(context, CreateReviewScreen.name);
+                }),
+              ],
+            );
+          }
+        ),
       ),
 
     );

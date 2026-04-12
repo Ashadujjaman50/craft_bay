@@ -9,8 +9,10 @@ class CartListProvider extends ChangeNotifier {
   List<CartItemModel> _cartItems = [];
 
   bool _getCartListInProgress = true;
+  bool _deleteCartListInProgress = false;
 
   bool get getCartListInProgress => _getCartListInProgress;
+  bool get deleteCartListInProgress => _deleteCartListInProgress;
 
   List<CartItemModel> get cartItems => _cartItems;
 
@@ -44,6 +46,28 @@ class CartListProvider extends ChangeNotifier {
 
     return isSuccess;
   }
+
+  Future<bool> deleteCartItem(String itemId) async {
+    bool isSuccess = false;
+    _deleteCartListInProgress = true;
+    notifyListeners();
+
+    final NetworkResponse response = await getNetworkCaller().deleteRequest(
+      Urls.deleteCartListUrl(itemId),
+    );
+    if (response.isSuccess){
+      _cartItems.removeWhere((item) => item.id == itemId);
+      isSuccess = true;
+      _errorMessage = null;
+    }
+    else{
+      _errorMessage = response.errorMessage;
+    }
+    _deleteCartListInProgress = false;
+    notifyListeners();
+    return isSuccess;
+  }
+
 
   int get totalCartItems => _cartItems.length;
 

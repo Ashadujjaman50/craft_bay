@@ -1,9 +1,10 @@
-import 'package:craft_bay/features/products/presentation/screen/product_review_screen.dart';
+import 'package:craft_bay/features/products/data/models/add_wish_list_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app/app_colors.dart';
 import '../../../../app/extensions/utils_extension.dart';
+import '../../../products_review/presentation/screen/product_review_screen.dart';
 import '../../../shared/presentation/widgets/center_circular_progress.dart';
 import '../../../shared/presentation/widgets/inc_dec_button.dart';
 import '../../../shared/presentation/widgets/product_favourite_button.dart';
@@ -11,6 +12,7 @@ import '../../../shared/presentation/widgets/product_rating.dart';
 import '../../../shared/presentation/widgets/snack_bar_message.dart';
 import '../../data/models/add_to_cart_model.dart';
 import '../providers/add_to_cart_provider.dart';
+import '../providers/add_wish_list_provider.dart';
 import '../providers/product_details_provider.dart';
 import '../widgets/color_picker.dart';
 import '../widgets/price_and_add_to_cart_section.dart';
@@ -30,9 +32,9 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
 
-  final ProductDetailsProvider _productDetailsProvider =
-  ProductDetailsProvider();
+  final ProductDetailsProvider _productDetailsProvider = ProductDetailsProvider();
   final AddToCartProvider _addToCartProvider = AddToCartProvider();
+  final AddWishListProvider _addWishListProvider = AddWishListProvider();
 
   int _quantity = 1;
   String? _selectedColor;
@@ -54,6 +56,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       providers: [
         ChangeNotifierProvider.value(value: _productDetailsProvider),
         ChangeNotifierProvider.value(value: _addToCartProvider),
+        ChangeNotifierProvider.value(value: _addWishListProvider),
       ],
       child: Scaffold(
         appBar: AppBar(title: Text('Product details')),
@@ -79,7 +82,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
-                            crossAxisAlignment: .start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               _buildTitleSection(),
                               if (_productDetailsProvider
@@ -157,11 +160,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget _buildTitleSection() {
     return Row(
       spacing: 8,
-      crossAxisAlignment: .start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           child: Column(
-            crossAxisAlignment: .start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 _productDetailsProvider.productDetailsModel!.title,
@@ -174,14 +177,28 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ProductRating(rating: '4.8'),
                   TextButton(
                     onPressed: () {
-                      Navigator.pushNamed(context, ProductReviewScreen.name);
+                      Navigator.pushNamed(context, ProductReviewScreen.name,
+                          arguments: _productDetailsProvider.productDetailsModel!.id);
                     },
                     child: Text(
                       'Reviews',
                       style: TextStyle(color: AppColors.themeColor),
                     ),
                   ),
-                  ProductFavouriteButton(),
+                  //wishlist added
+                  ProductFavouriteButton(
+                    onTapAddWishList: () async {
+                      AddWishListModel params = AddWishListModel(
+                        id: _productDetailsProvider.productDetailsModel!.id,
+                      );
+                      final isSuccess = await _addWishListProvider.addWishList(params);
+                      if (isSuccess) {
+                        showSnackBarMessage(context, 'Added to wish list');
+                      } else {
+                        showSnackBarMessage(context, _addWishListProvider.errorMessage!);
+                      }
+                    },
+                  ),
                 ],
               ),
             ],

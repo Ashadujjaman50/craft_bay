@@ -5,10 +5,10 @@ import '../features/auth/presentation/screen/sign_up_screen.dart';
 import '../features/auth/presentation/screen/splash_screen.dart';
 import '../features/auth/presentation/screen/verify_otp_screen.dart';
 import '../features/category/data/models/category_model.dart';
-import '../features/products/presentation/screen/create_review_screen.dart';
+import '../features/products_review/presentation/screen/create_review_screen.dart';
 import '../features/products/presentation/screen/product_details_screen.dart';
 import '../features/products/presentation/screen/product_list_screen.dart';
-import '../features/products/presentation/screen/product_review_screen.dart';
+import '../features/products_review/presentation/screen/product_review_screen.dart';
 import '../features/shared/presentation/screens/main_nav_holder_screen.dart';
 import '../features/wishlist/presentation/screen/wish_list_screen.dart';
 
@@ -42,7 +42,8 @@ class AppRoutes{
         widget = ProductDetailsScreen(productId: productId);
         break;
       case ProductReviewScreen.name:
-        widget = const ProductReviewScreen();
+        final productId = settings.arguments as String;
+        widget = ProductReviewScreen(productId: productId);
         break;
       case CreateReviewScreen.name:
         widget = const CreateReviewScreen();

@@ -1,4 +1,6 @@
 import 'package:craft_bay/features/home/presentation/providers/home_slider_provider.dart';
+import 'package:craft_bay/features/products/presentation/providers/product_list_provider.dart';
+import 'package:craft_bay/features/products/presentation/providers/tag_product_list_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +36,11 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       context.read<HomeSliderProvider>().getHomeSliders();
       context.read<CategoryListProvider>().getCategories();
+
+      final tagProvider = context.read<TagProductListProvider>();
+      tagProvider.getProducts('new');
+      tagProvider.getProducts('popular');
+      tagProvider.getProducts('special');
     });
   }
 
@@ -62,7 +69,10 @@ class _MainNavHolderScreenState extends State<MainNavHolderScreen> {
             elevation: 3,
 
             items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+              ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.dashboard),
                 label: 'Categories',

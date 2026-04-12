@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../data/models/review_model.dart';
+
 class ReviewCard extends StatelessWidget {
-  final String userName;
-  final String reviewText;
+  final ReviewModel reviewModel;
 
   const ReviewCard({
     super.key,
-    required this.userName,
-    required this.reviewText,
+    required this.reviewModel,
   });
 
   @override
@@ -31,7 +31,7 @@ class ReviewCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  userName,
+                  '${reviewModel.firstName} ${reviewModel.lastName}',
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -42,7 +42,7 @@ class ReviewCard extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              reviewText,
+              reviewModel.comment,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.grey.shade600,
