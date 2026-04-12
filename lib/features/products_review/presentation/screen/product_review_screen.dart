@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../app/app_colors.dart';
+import '../../../../app/controllers/auth_controller.dart';
+import '../../../auth/presentation/screen/sign_in_screen.dart';
 import '../providers/product_review_provider.dart';
 import '../widgets/review_card.dart';
 
@@ -49,7 +51,7 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
           builder: (context,_,_) {
 
             if (_productReviewProvider.getProductReviewInProgress) {
-              return CenterCircularProgress();
+              return const CenterCircularProgress();
             }
 
             return Column(
@@ -65,9 +67,19 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
                     },
                   ),
                 ),
-
-                _buildReviewCountAndCreate('153', () {
-                  Navigator.pushNamed(context, CreateReviewScreen.name);
+                //Create Review page
+                _buildReviewCountAndCreate('${_productReviewProvider.reviewLists.length}', () async {
+                  final bool loggedIn = await AuthController.isUserAlreadyLoggedIn();
+                  if (loggedIn) {
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, CreateReviewScreen.name,
+                          arguments: widget.productId);
+                    }
+                  } else {
+                    if (context.mounted) {
+                      Navigator.pushNamed(context, SignInScreen.name);
+                    }
+                  }
                 }),
               ],
             );
@@ -92,13 +104,14 @@ class _ProductReviewScreenState extends State<ProductReviewScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Reviews (${reviewCount})',
+                'Reviews ($reviewCount)',
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
                   color: Colors.black54,
                 ),
               ),
+
               FloatingActionButton(
                 onPressed: onTapCreate,
                 backgroundColor: AppColors.themeColor,

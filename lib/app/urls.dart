@@ -10,6 +10,8 @@ class Urls {
   static const String addWishListUrl = '$_baseUrl/wishlist';
   static const String getWishListUrl = '$_baseUrl/wishlist';
 
+  static const String addReviewUrl = '$_baseUrl/review';
+
 
   static String deleteWishListUrl(String itemId) =>
       '$_baseUrl/wishlist/$itemId';

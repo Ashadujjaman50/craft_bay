@@ -46,7 +46,8 @@ class AppRoutes{
         widget = ProductReviewScreen(productId: productId);
         break;
       case CreateReviewScreen.name:
-        widget = const CreateReviewScreen();
+        final productId = settings.arguments as String;
+        widget = CreateReviewScreen(productId: productId);
         break;
 
     }
